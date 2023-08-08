@@ -468,12 +468,21 @@ async function copyLuaSocket() {
     let srcCopyDir: string = "";
     try {
         if (process.platform === "win32") {
-            srcCopyDir = path.join(Tools.VSCodeExtensionPath, '/debugger/luasocket/win/x64/' + selectWord.label + "/socket");
+            const selectedArch = await vscode.window.showQuickPick([
+                { label: "x86", picked: true, description: "win32" },
+                { label: "x64", picked: false, description: "win64" },
+            ], { placeHolder: "arch" });
+            if (!selectedArch) {
+                return;
+            }
+            const arch = selectedArch.label;
+
+            srcCopyDir = path.join(Tools.VSCodeExtensionPath, '/debugger/luasocket/win/', arch, selectWord.label + "/socket");
             let cmdStr1 = "xcopy " + srcCopyDir + " " + dstPath + "\\socket\\" + " /S /Y";
             console.log("cmdStr:%s", cmdStr1);
             child_process.execSync(cmdStr1);
 
-            srcCopyDir = path.join(Tools.VSCodeExtensionPath, '/debugger/luasocket/win/x64/' + selectWord.label + "/mime");
+            srcCopyDir = path.join(Tools.VSCodeExtensionPath, '/debugger/luasocket/win/', arch, selectWord.label + "/mime");
             let cmdStr2 = "xcopy " + srcCopyDir + " " + dstPath + "\\mime\\" + " /S /Y";
             console.log("cmdStr:%s", cmdStr2);
             child_process.execSync(cmdStr2);
