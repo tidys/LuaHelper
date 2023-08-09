@@ -58,8 +58,12 @@
                 "title": "LuaHelper: Copy Lua Socket Lib"
             },
             {
-                "command": "LuaHelper.insertDebugCode",
-                "title": "LuaHelper: Insert Debugger Code"
+                "command": "LuaHelper.insertDebugCodeWidthLocalhost",
+                "title": "LuaHelper: Insert Debugger Code (localhost)"
+            },
+            {
+                "command": "LuaHelper.insertDebugCodeWithIPv4",
+                "title": "LuaHelper: Insert Debugger Code (IPv4)"
             },
             {
                 "command": "LuaHelper.openDebugFolder",

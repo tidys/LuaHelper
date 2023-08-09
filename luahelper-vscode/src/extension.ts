@@ -72,7 +72,8 @@ export function activate(context: vscode.ExtensionContext) {
     // 插入快捷拷贝luasocket的命令   
     savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.copyLuaSocket", copyLuaSocket));
     // 插入快捷输入调试的命令   
-    savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.insertDebugCode", insertDebugCode));
+    savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.insertDebugCodeWidthLocalhost", insertDebugCodeWithLocalhost));
+    savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.insertDebugCodeWithIPv4", insertDebugCodeWithIPv4));
     // 打开调试文件夹
     savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.openDebugFolder", openDebugFolder));
     // 设置格式化配置
@@ -346,8 +347,7 @@ function stopServer() {
         client.stop();
     }
 }
-
-async function insertDebugCode() {
+async function insertDebugCode(ip) {
     const activeEditor = vscode.window.activeTextEditor;
     if (!activeEditor) {
         return;
@@ -357,13 +357,48 @@ async function insertDebugCode() {
         return;
     }
 
-    console.log(os.arch());
-
+    const insertCode = `require("LuaPanda").start("${ip}", 8818);`
     const ins = new vscode.SnippetString();
     //ins.appendText(`\n`);
-    ins.appendText(`require("LuaPanda").start("127.0.0.1", 8818);`);
-    //ins.appendText(`\n`);
-    activeEditor.insertSnippet(ins);
+    ins.appendText(insertCode);
+    ins.appendText(`\n`);
+
+    const text = document.getText();
+    const index = text.indexOf(insertCode);
+    if (index !== -1) {
+        const position = document.positionAt(index);
+        const line = document.lineAt(position);
+        activeEditor.selection = new vscode.Selection(line.range.start, line.range.end);
+        activeEditor.revealRange(line.range);
+        vscode.window.showInformationMessage(`has insert code at line ${line.lineNumber + 1}: ${insertCode}`)
+    } else {
+        activeEditor.insertSnippet(ins, document.lineAt(0).range.start);
+    }
+}
+
+async function insertDebugCodeWithLocalhost() {
+    insertDebugCode("127.0.0.1");
+}
+
+function getLocalIP() {
+    const interfaces = os.networkInterfaces();
+    for (let key in interfaces) {
+        for (let iface of interfaces[key]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return null;
+}
+
+async function insertDebugCodeWithIPv4() {
+    const ip = getLocalIP();
+    if (!ip) {
+        vscode.window.showInformationMessage("InsertDebugCodeWithIPv4 failed: getLocalIP failed!");
+        return;
+    }
+    insertDebugCode(ip);
 }
 
 async function copyDebugFile() {
