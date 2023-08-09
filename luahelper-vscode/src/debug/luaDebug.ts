@@ -11,7 +11,7 @@ import {
     Thread, StackFrame, Scope, Source, Handles
 } from 'vscode-debugadapter';
 import { DebugProtocol } from 'vscode-debugprotocol';
-import { basename } from 'path';
+import { basename, dirname } from 'path';
 import { LuaDebugRuntime, LuaBreakpoint } from './luaDebugRuntime';
 import * as Net from 'net';
 import { DataProcessor } from './dataProcessor';
@@ -361,9 +361,11 @@ export class LuaDebugSession extends LoggingDebugSession {
                     if(this._programTerminal){
                         this._programTerminal.dispose();
                     }
+                    const cwd = dirname(args.program);
                     this._programTerminal = vscode.window.createTerminal({
                         name: "Run Program File (LuaPanda)",
                         env: {},
+                        cwd,
                     });
 
                     let programCmdWithArgs = '"' + args.program + '"';
