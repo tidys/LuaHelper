@@ -1,4 +1,4 @@
-
+> 本插件是基于[LuaHelper](https://github.com/Tencent/LuaHelper)的二次开发版本，增加的功能提交给LuaHelper，但是没能及时合并，所以才自己单独发布了一个版本。
 # LuaHelper Guide
 
 [![version](https://vsmarketplacebadges.dev/version-short/yinfei.luahelper.png)](https://marketplace.visualstudio.com/items?itemName=yinfei.luahelper)

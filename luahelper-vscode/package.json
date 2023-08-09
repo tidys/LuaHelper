@@ -1,12 +1,12 @@
 {
-    "name": "luahelper",
+    "name": "luahelper-plus",
     "displayName": "Lua",
     "description": "LuaHelper, Intellisense, Linting, Debugging, Code formatting, High-performance, and more.",
-    "version": "0.2.22",
-    "publisher": "yinfei",
+    "version": "0.2.23",
+    "publisher": "xuyanfeng",
     "author": {
-        "name": "yinfei",
-        "email": "313745207@qq.com"
+        "name": "xuyanfeng",
+        "email": "774177933@qq.com"
     },
     "license": "BSD-3-Clause",
     "keywords": [
@@ -21,6 +21,8 @@
         "luacheck",
         "lua format",
         "luaformat",
+        "cocos lua",
+        "cocos2dx lua",
         "emmylua"
     ],
     "icon": "images/luahelper.png",
