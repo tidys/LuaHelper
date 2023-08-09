@@ -424,8 +424,8 @@ export class LuaDebugSession extends LoggingDebugSession {
     }
     private isPowerShellTerminal(): boolean {
         const config = vscode.workspace.getConfiguration();
-        const shellPath = config.get<string>("terminal.integrated.shell.windows");
-        return shellPath && shellPath.toLowerCase().includes("powershell.exe");
+        const shellPath = config.get<string>("terminal.integrated.defaultProfile.windows");
+        return shellPath && shellPath.toLowerCase().includes("powershell");
     }
     private startServer(sendArgs){
         this.connectionFlag = false;
