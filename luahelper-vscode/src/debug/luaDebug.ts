@@ -48,8 +48,8 @@ export class LuaDebugSession extends LoggingDebugSession {
     private UseLoadstring: boolean = false;
     private _dbCheckBreakpoint = true;
     //terminal实例，便于销毁
-    private _debugFileTermianl;
-    private _programTermianl: vscode.Terminal;
+    private _debugFileTerminal;
+    private _programTerminal: vscode.Terminal;
     private _VSCodeExtensionPath: string;
     private launchArguments: any;
     //保存所有活动的LuaDebugSession实例
@@ -175,10 +175,10 @@ export class LuaDebugSession extends LoggingDebugSession {
     }
 
     shutdown(): void {
-        if(this._programTermianl){
-            this._programTermianl.dispose();
+        if(this._programTerminal){
+            this._programTerminal.dispose();
         }
-        
+
         const args = this.launchArguments;
         if (args.program !== undefined && args.program.trim() !== '') {
             if (args.programWithShutdown === true) {
@@ -312,10 +312,10 @@ export class LuaDebugSession extends LoggingDebugSession {
             }
             let filePath = retObject["filePath"];
 
-            if(this._debugFileTermianl){
-                this._debugFileTermianl.dispose();
+            if(this._debugFileTerminal){
+                this._debugFileTerminal.dispose();
             }
-            this._debugFileTermianl = vscode.window.createTerminal({
+            this._debugFileTerminal = vscode.window.createTerminal({
                 name: "Debug Lua File (LuaPanda)",
                 env: {},
             });
@@ -350,18 +350,18 @@ export class LuaDebugSession extends LoggingDebugSession {
             let runCMD = pathCMD + cpathCMD + reqCMD + doFileCMD;
 
             let LuaCMD = strVect[0] + " -e ";
-            this._debugFileTermianl.sendText(LuaCMD + runCMD, true);
-            this._debugFileTermianl.show();
+            this._debugFileTerminal.sendText(LuaCMD + runCMD, true);
+            this._debugFileTerminal.show();
         }
         else{
             // 非单文件调试模式下，拉起program
             if(args.program != undefined && args.program.trim() != ''){
                 if(fs.existsSync(args.program) && fs.statSync(args.program).isFile()){
                     //program 和 args 分开
-                    if(this._programTermianl){
-                        this._programTermianl.dispose();
+                    if(this._programTerminal){
+                        this._programTerminal.dispose();
                     }
-                    this._programTermianl = vscode.window.createTerminal({
+                    this._programTerminal = vscode.window.createTerminal({
                         name: "Run Program File (LuaPanda)",
                         env: {},
                     });
@@ -374,8 +374,8 @@ export class LuaDebugSession extends LoggingDebugSession {
                         programCmdWithArgs = programCmdWithArgs + " " + arg;
                     }
 
-                    this._programTermianl.sendText(programCmdWithArgs , true);
-                    this._programTermianl.show();
+                    this._programTerminal.sendText(programCmdWithArgs , true);
+                    this._programTerminal.show();
                 }else{
                     let progError = "[Warning] 配置文件 launch.json 中的 program 路径有误: \n";
                     progError += " + program 配置项的作用是，在调试器开始运行时拉起一个可执行文件（注意不是lua文件）。";
