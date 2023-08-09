@@ -118,6 +118,11 @@
                                 "description": "Path to executable file which launched with debugger(not a lua file), default \"\". \n随调试器启动的可执行文件路径(非lua文件), 如无可以填\"\"。",
                                 "default": ""
                             },
+                            "programWithShutdown": {
+                                "type": "boolean",
+                                "description": "Does the program close when debugger is turned off\n当调试关闭时, 是否关闭可执行文件",
+                                "default": true
+                            },
                             "args": {
                                 "type": "array",
                                 "description": "Program execution parameters, the structure is an array of strings. \nprogram 执行时需要的参数, 结构是一个字符串数组。",
@@ -621,7 +626,7 @@
                     "scope": "resource",
                     "type": "integer",
                     "markdownDescription": "%luahelper.format.line_breaks_after_function_body%"
-                },             
+                },
                 "luahelper.Warn.AllEnable": {
                     "default": true,
                     "scope": "resource",
