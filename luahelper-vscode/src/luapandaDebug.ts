@@ -217,5 +217,6 @@ export class LuaConfigurationProvider implements vscode.DebugConfigurationProvid
             const item = this._debugSessions[i];
             item.clean();
         }
+        this._debugSessions = [];
     }
 }
