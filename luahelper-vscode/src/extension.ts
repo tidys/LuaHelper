@@ -72,8 +72,10 @@ export function activate(context: vscode.ExtensionContext) {
     // 插入快捷拷贝luasocket的命令   
     savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.copyLuaSocket", copyLuaSocket));
     // 插入快捷输入调试的命令   
-    savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.insertDebugCodeWidthLocalhost", insertDebugCodeWithLocalhost));
+    savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.insertDebugCodeWithLocalhost", insertDebugCodeWithLocalhost));
+    savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.insertDebugCodeWithLocalhostLog", insertDebugCodeWithLocalhostLog));
     savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.insertDebugCodeWithIPv4", insertDebugCodeWithIPv4));
+    savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.insertDebugCodeWithIPv4Log", insertDebugCodeWithIPv4Log));
     // 打开调试文件夹
     savedContext.subscriptions.push(vscode.commands.registerCommand("LuaHelper.openDebugFolder", openDebugFolder));
     // 设置格式化配置
@@ -347,7 +349,7 @@ function stopServer() {
         client.stop();
     }
 }
-async function insertDebugCode(ip) {
+async function insertDebugCode(ip, logLevel) {
     const activeEditor = vscode.window.activeTextEditor;
     if (!activeEditor) {
         return;
@@ -357,7 +359,7 @@ async function insertDebugCode(ip) {
         return;
     }
 
-    const insertCode = `require("LuaPanda").start("${ip}", 8818);`
+    const insertCode = `require("LuaPanda").setLogLevel(${logLevel}).start("${ip}", 8818);`
     const ins = new vscode.SnippetString();
     //ins.appendText(`\n`);
     ins.appendText(insertCode);
@@ -377,9 +379,11 @@ async function insertDebugCode(ip) {
 }
 
 async function insertDebugCodeWithLocalhost() {
-    insertDebugCode("127.0.0.1");
+    insertDebugCode("127.0.0.1", 2);
 }
-
+async function insertDebugCodeWithLocalhostLog() {
+    insertDebugCode("127.0.0.1", 0);
+}
 function getLocalIP() {
     const interfaces = os.networkInterfaces();
     for (let key in interfaces) {
@@ -398,9 +402,16 @@ async function insertDebugCodeWithIPv4() {
         vscode.window.showInformationMessage("InsertDebugCodeWithIPv4 failed: getLocalIP failed!");
         return;
     }
-    insertDebugCode(ip);
+    insertDebugCode(ip, 2);
 }
-
+async function insertDebugCodeWithIPv4Log() {
+    const ip = getLocalIP();
+    if (!ip) {
+        vscode.window.showInformationMessage("InsertDebugCodeWithIPv4 failed: getLocalIP failed!");
+        return;
+    }
+    insertDebugCode(ip, 0);
+}
 async function copyDebugFile() {
     const activeEditor = vscode.window.activeTextEditor;
     if (!activeEditor) {

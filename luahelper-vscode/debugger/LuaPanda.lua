@@ -618,6 +618,11 @@ function this.fileExists(path)
     if f~= nil then io.close(f) return true else return false end
  end
 
+function this.setLogLevel(level)
+    consoleLogLevel = level;
+    return this;
+end
+
 --返回一些信息，帮助用户定位问题
 function this.getInfo()
     --用户设置项

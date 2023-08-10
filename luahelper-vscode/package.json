@@ -2,7 +2,7 @@
     "name": "luahelper-plus",
     "displayName": "lua-plus",
     "description": "LuaHelper, Intellisense, Linting, Debugging, Code formatting, High-performance, and more.",
-    "version": "0.2.27",
+    "version": "0.2.28",
     "publisher": "xuyanfeng",
     "author": {
         "name": "xuyanfeng",
@@ -60,12 +60,20 @@
                 "title": "LuaHelper: Copy Lua Socket Lib"
             },
             {
-                "command": "LuaHelper.insertDebugCodeWidthLocalhost",
+                "command": "LuaHelper.insertDebugCodeWithLocalhost",
                 "title": "LuaHelper: Insert Debugger Code (localhost)"
+            },
+            {
+                "command": "LuaHelper.insertDebugCodeWithLocalhostLog",
+                "title": "LuaHelper: Insert Debugger Code (localhost), Show LuaPanda all log"
             },
             {
                 "command": "LuaHelper.insertDebugCodeWithIPv4",
                 "title": "LuaHelper: Insert Debugger Code (IPv4)"
+            },
+            {
+                "command": "LuaHelper.insertDebugCodeWithIPv4Log",
+                "title": "LuaHelper: Insert Debugger Code (IPv4), Show LuaPanda all log"
             },
             {
                 "command": "LuaHelper.openDebugFolder",
