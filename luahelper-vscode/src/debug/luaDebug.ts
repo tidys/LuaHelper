@@ -173,8 +173,15 @@ export class LuaDebugSession extends LoggingDebugSession {
         super.configurationDoneRequest(response, args);
         this._configurationDone.notify();
     }
-
+    private _closeCallback: Function = null;
+    public setCloseCallBack(cb: Function) {
+        this._closeCallback = cb;
+    }
     shutdown(): void {
+        this._closeCallback&&this._closeCallback(this);
+        this.clean();
+    }
+    public clean() {
         if(this._programTerminal){
             this._programTerminal.dispose();
         }

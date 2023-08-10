@@ -10,6 +10,7 @@ import {LuaPath} from './common/luaPath';
 export class LuaConfigurationProvider implements vscode.DebugConfigurationProvider {
     private _server?: Net.Server;
     private static RunFileTerminal;
+    private _debugSessions: LuaDebugSession[] = [];
     resolveDebugConfiguration(folder: vscode.WorkspaceFolder | undefined, config: vscode.DebugConfiguration, token?: vscode.CancellationToken): vscode.ProviderResult<vscode.DebugConfiguration> {
         // if launch.json is missing or empty
         if (!config.type && !config.name) {
@@ -190,6 +191,16 @@ export class LuaConfigurationProvider implements vscode.DebugConfigurationProvid
                 const session = new LuaDebugSession();
                 session.setRunAsServer(true);
                 session.start(<NodeJS.ReadableStream>socket, socket);
+                session.setCloseCallBack((session)=>{
+                    if (!session) {
+                        return;
+                    }
+                    const idx = this._debugSessions.findIndex(el => el === session);
+                    if (idx != -1) {
+                        this._debugSessions.splice(idx, 1);
+                    }
+                });
+                this._debugSessions.push(session);
             }).listen(0);
         }
         // make VS Code connect to debug server instead of launching debug adapter
@@ -201,6 +212,10 @@ export class LuaConfigurationProvider implements vscode.DebugConfigurationProvid
     dispose() {
         if (this._server) {
             this._server.close();
+        }
+        for (let i = 0; i < this._debugSessions.length; i++) {
+            const item = this._debugSessions[i];
+            item.clean();
         }
     }
 }
