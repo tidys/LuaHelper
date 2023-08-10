@@ -433,24 +433,25 @@ async function copyDebugFile() {
             srcPath = srcPath + "\\debugger\\LuaPanda.lua";
 
             dstPath = selectDstPath.fsPath + "\\LuaPanda.lua";
-            let cmdStr = "copy " + srcPath + " " + dstPath + "/Y";
+            let cmdStr = `copy ${srcPath} ${dstPath} /Y`;
             console.log("cmdStr:%s", cmdStr);
             child_process.execSync(cmdStr);
             vscode.window.showInformationMessage("copy lua debug file success.");
         } else if (process.platform === "darwin") {
 
-            let cmdStr = "cp -R " + srcPath + dstPath;
+            let cmdStr = `cp -R ${srcPath} ${dstPath}`;
             console.log("cmdStr:%s", cmdStr);
             child_process.execSync(cmdStr);
             vscode.window.showInformationMessage("copy lua debug file success.");
         } else if (process.platform === "linux") {
-            let cmdStr = "cp -a " + srcPath + dstPath;
+            let cmdStr = `cp -a ${srcPath} ${dstPath}`;
             console.log("cmdStr:%s", cmdStr);
             child_process.execSync(cmdStr);
             vscode.window.showInformationMessage("copy lua debug file success.");
         }
     } catch (e) {
         //捕获异常
+        vscode.window.showInformationMessage("copy lua debug file failed, please open devtools check error message");
         console.log("exception", e);
     }
 }
