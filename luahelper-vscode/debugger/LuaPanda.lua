@@ -623,6 +623,12 @@ function this.setLogLevel(level)
     return this;
 end
 
+function this.setTimeout(time)
+    -- ios 如果使用内网穿透连接，建议使用0.05
+    connectTimeoutSec = time;
+    return this;
+end
+
 --返回一些信息，帮助用户定位问题
 function this.getInfo()
     --用户设置项

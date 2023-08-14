@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from "fs";
 //import URI from 'vscode-uri';
 let path = require("path");
+import * as os from 'os';
 
 export class Tools {
     public static extMap;  // 可处理的文件后缀列表
@@ -11,6 +12,18 @@ export class Tools {
     public static developmentMode = false;
 
 
+    public static getLocalIP() {
+        const interfaces = os.networkInterfaces();
+        for (let key in interfaces) {
+            for (let iface of interfaces[key]) {
+                if (iface.family === 'IPv4' && !iface.internal) {
+                    return iface.address;
+                }
+            }
+        }
+        return null;
+    }
+    
     // 路径相关函数
     // 获取扩展中预置的lua文件位置
     public static getLuaPathInExtension() : string{

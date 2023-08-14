@@ -359,7 +359,7 @@ async function insertDebugCode(ip, logLevel) {
         return;
     }
 
-    const insertCode = `require("LuaPanda").setLogLevel(${logLevel}).start("${ip}", 8818);`
+    const insertCode = `require("LuaPanda").setTimeout(0.05).setLogLevel(${logLevel}).start("${ip}", 8818);`
     const ins = new vscode.SnippetString();
     //ins.appendText(`\n`);
     ins.appendText(insertCode);
@@ -384,20 +384,9 @@ async function insertDebugCodeWithLocalhost() {
 async function insertDebugCodeWithLocalhostLog() {
     insertDebugCode("127.0.0.1", 0);
 }
-function getLocalIP() {
-    const interfaces = os.networkInterfaces();
-    for (let key in interfaces) {
-        for (let iface of interfaces[key]) {
-            if (iface.family === 'IPv4' && !iface.internal) {
-                return iface.address;
-            }
-        }
-    }
-    return null;
-}
 
 async function insertDebugCodeWithIPv4() {
-    const ip = getLocalIP();
+    const ip = Tools.getLocalIP();
     if (!ip) {
         vscode.window.showInformationMessage("InsertDebugCodeWithIPv4 failed: getLocalIP failed!");
         return;
@@ -405,7 +394,7 @@ async function insertDebugCodeWithIPv4() {
     insertDebugCode(ip, 2);
 }
 async function insertDebugCodeWithIPv4Log() {
-    const ip = getLocalIP();
+    const ip = Tools.getLocalIP();
     if (!ip) {
         vscode.window.showInformationMessage("InsertDebugCodeWithIPv4 failed: getLocalIP failed!");
         return;
