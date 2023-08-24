@@ -2,7 +2,7 @@
     "name": "luahelper-plus",
     "displayName": "lua-plus",
     "description": "LuaHelper, Intellisense, Linting, Debugging, Code formatting, High-performance, and more.",
-    "version": "0.2.29",
+    "version": "0.2.30",
     "publisher": "xuyanfeng",
     "author": {
         "name": "xuyanfeng",
